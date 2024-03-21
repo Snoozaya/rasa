@@ -19,6 +19,8 @@ schema;responses:
             type: "str"
           image:
             type: "str"
+          sentiment:
+            type: "str"
           custom:
             type: "map"
             allowempty: True

@@ -176,7 +176,7 @@ class RestInput(InputChannel):
                     structlogger.exception(
                         "rest.message.received.failure", text=copy.deepcopy(text)
                     )
-
+                logging.info(collector.messages)
                 return response.json(collector.messages)
 
         return custom_webhook

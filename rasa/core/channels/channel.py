@@ -362,7 +362,6 @@ class CollectingOutputChannel(OutputChannel):
             "attachment": attachment,
             "custom": custom,
         }
-        logging.info(obj)
 
         # filter out any values that are `None`
         return {k: v for k, v in obj.items() if v is not None}
