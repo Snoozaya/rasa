@@ -243,7 +243,10 @@ class OutputChannel:
             await self.send_attachment(
                 recipient_id, message.pop("attachment"), **message
             )
-        # TODO: Add message.get("sentiment") & send?
+
+        if message.get("sentiments"):
+            await self.send_custom_json(recipient_id, message.pop("sentiments"), **message)
+
         if message.get("elements"):
             await self.send_elements(recipient_id, message.pop("elements"), **message)
 
@@ -359,6 +362,7 @@ class CollectingOutputChannel(OutputChannel):
             "attachment": attachment,
             "custom": custom,
         }
+        logging.info(obj)
 
         # filter out any values that are `None`
         return {k: v for k, v in obj.items() if v is not None}
