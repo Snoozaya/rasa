@@ -188,9 +188,11 @@ class MessageProcessor:
         action_extract_slots = rasa.core.actions.action.action_for_name_or_text(
             ACTION_EXTRACT_SLOTS, self.domain, self.action_endpoint
         )
+        logging.info(f"In processor.py 191: {action_extract_slots}")
         extraction_events = await action_extract_slots.run(
             output_channel, self.nlg, tracker, self.domain
         )
+        logging.info(f"In processor.py 191: {extraction_events}")
 
         await self._send_bot_messages(extraction_events, tracker, output_channel)
 
@@ -691,9 +693,11 @@ class MessageProcessor:
     def _get_action(
         self, action_name: Text
     ) -> Optional[rasa.core.actions.action.Action]:
-        return rasa.core.actions.action.action_for_name_or_text(
+        test = rasa.core.actions.action.action_for_name_or_text(
             action_name, self.domain, self.action_endpoint
         )
+        logging.info(f"In processor.py 697: {test}")
+        return test
 
     async def parse_message(
         self,
