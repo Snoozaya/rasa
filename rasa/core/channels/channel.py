@@ -243,7 +243,7 @@ class OutputChannel:
             await self.send_attachment(
                 recipient_id, message.pop("attachment"), **message
             )
-
+        # TODO: Add message.get("sentiment") & send?
         if message.get("elements"):
             await self.send_elements(recipient_id, message.pop("elements"), **message)
 
@@ -342,6 +342,7 @@ class CollectingOutputChannel(OutputChannel):
     def _message(
         recipient_id: Text,
         text: Text = None,
+        sentiments: List[Text] = None,
         image: Text = None,
         buttons: List[Dict[Text, Any]] = None,
         attachment: Text = None,
@@ -352,6 +353,7 @@ class CollectingOutputChannel(OutputChannel):
         obj = {
             "recipient_id": recipient_id,
             "text": text,
+            "sentiments": sentiments,
             "image": image,
             "buttons": buttons,
             "attachment": attachment,

@@ -88,6 +88,7 @@ KEY_ACTIONS = "actions"
 KEY_FORMS = "forms"
 KEY_E2E_ACTIONS = "e2e_actions"
 KEY_RESPONSES_TEXT = "text"
+KEY_SENTIMENTS = "sentiments"
 
 ALL_DOMAIN_KEYS = [
     KEY_SLOTS,
@@ -732,7 +733,7 @@ class Domain:
         action_names: List[Text],
         forms: Union[Dict[Text, Any], List[Text]],
         data: Dict,
-        sentiments:List[Union[Text, Dict[Text, Any]]] = None,
+        sentiments: List[Union[Text, Dict[Text, Any]]] = None,
         action_texts: Optional[List[Text]] = None,
         store_entities_as_slots: bool = True,
         session_config: SessionConfig = SessionConfig.default(),
