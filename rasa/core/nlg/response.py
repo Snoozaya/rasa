@@ -100,7 +100,7 @@ class TemplatedNaturalLanguageGenerator(NaturalLanguageGenerator):
         """Combine slot values and key word arguments to fill responses."""
         # Getting the slot values in the response variables
         response_vars = self._response_variables(filled_slots, kwargs)
-
+        logging.info(f"From response.py 103: {filled_slots}")
         keys_to_interpolate = [
             "text",
             "image",
@@ -116,6 +116,7 @@ class TemplatedNaturalLanguageGenerator(NaturalLanguageGenerator):
                     response[key] = interpolator.interpolate(
                         response[key], response_vars
                     )
+        logging.info(f"From response.py 119: {response}")
         return response
 
     @staticmethod

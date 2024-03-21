@@ -88,7 +88,6 @@ KEY_ACTIONS = "actions"
 KEY_FORMS = "forms"
 KEY_E2E_ACTIONS = "e2e_actions"
 KEY_RESPONSES_TEXT = "text"
-KEY_RESPONSES_SENTIMENT = "sentiment"
 
 ALL_DOMAIN_KEYS = [
     KEY_SLOTS,

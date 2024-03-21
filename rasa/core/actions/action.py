@@ -210,7 +210,7 @@ def action_for_name_or_text(
 
 def create_bot_utterance(message: Dict[Text, Any]) -> BotUttered:
     """Create BotUttered event from message."""
-    logging.info(message["sentiment"])
+    logging.info(f"From actions.py 213: {message["sentiment"]}")
     bot_message = BotUttered(
         text=message.pop("text", None),
         data={
@@ -325,7 +325,7 @@ class ActionBotResponse(Action):
                 )
             return []
         message["utter_action"] = self.utter_action
-        logging.info(message)
+        logging.info(f"From actions.py 328: {message}")
         return [create_bot_utterance(message)]
 
     def name(self) -> Text:

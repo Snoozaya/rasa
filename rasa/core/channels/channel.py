@@ -244,8 +244,8 @@ class OutputChannel:
                 recipient_id, message.pop("attachment"), **message
             )
 
-        if message.get("sentiments"):
-            await self.send_custom_json(recipient_id, message.pop("sentiments"), **message)
+        if message.get("sentiment"):
+            await self.send_custom_json(recipient_id, message.pop("sentiment"), **message)
 
         if message.get("elements"):
             await self.send_elements(recipient_id, message.pop("elements"), **message)
@@ -345,7 +345,7 @@ class CollectingOutputChannel(OutputChannel):
     def _message(
         recipient_id: Text,
         text: Text = None,
-        sentiments: List[Text] = None,
+        sentiment: List[Text] = None,
         image: Text = None,
         buttons: List[Dict[Text, Any]] = None,
         attachment: Text = None,
@@ -356,7 +356,7 @@ class CollectingOutputChannel(OutputChannel):
         obj = {
             "recipient_id": recipient_id,
             "text": text,
-            "sentiments": sentiments,
+            "sentiment": sentiment,
             "image": image,
             "buttons": buttons,
             "attachment": attachment,
