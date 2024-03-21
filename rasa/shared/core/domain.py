@@ -732,6 +732,7 @@ class Domain:
         action_names: List[Text],
         forms: Union[Dict[Text, Any], List[Text]],
         data: Dict,
+        sentiments:List[Union[Text, Dict[Text, Any]]] = None,
         action_texts: Optional[List[Text]] = None,
         store_entities_as_slots: bool = True,
         session_config: SessionConfig = SessionConfig.default(),
@@ -748,6 +749,7 @@ class Domain:
             action_names: Names of custom actions.
             forms: Form names and their slot mappings.
             data: original domain dict representation.
+            sentiments: List of sentiments with utterance param containing a list of actions to apply sentiment to
             action_texts: End-to-End bot utterances from end-to-end stories.
             store_entities_as_slots: If `True` Rasa will automatically create `SlotSet`
                 events for entities if there are slots with the same name as the entity.
@@ -768,6 +770,7 @@ class Domain:
         action_names += overridden_form_actions
 
         self.responses = responses
+        self.sentiments = sentiments
 
         self.action_texts = action_texts if action_texts is not None else []
 
