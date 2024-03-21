@@ -229,8 +229,11 @@ class OutputChannel:
             await self.send_text_with_buttons(
                 recipient_id, message.pop("text"), message.pop("buttons"), **message
             )
+        elif message.get("sentiment"):
+            await self.send_text_message_with_sentiment(recipient_id, message.pop("text"), message.pop("sentiment"), **message)
         elif message.get("text"):
             await self.send_text_message(recipient_id, message.pop("text"), **message)
+
 
         if message.get("custom"):
             await self.send_custom_json(recipient_id, message.pop("custom"), **message)
@@ -243,9 +246,6 @@ class OutputChannel:
             await self.send_attachment(
                 recipient_id, message.pop("attachment"), **message
             )
-
-        if message.get("sentiment"):
-            await self.send_custom_json(recipient_id, message.pop("sentiment"), **message)
 
         if message.get("elements"):
             await self.send_elements(recipient_id, message.pop("elements"), **message)
@@ -272,6 +272,12 @@ class OutputChannel:
         """Sends an attachment. Default will just post as a string."""
 
         await self.send_text_message(recipient_id, f"Attachment: {attachment}")
+
+    async def send_text_message_with_sentiment(
+        self, recipient_id: Text, text: Text, sentiment: Text, **kwargs: Any
+    ) -> None:
+        for message_part in text.strip().split("\n\n"):
+            await self._persist_message(self._message(recipient_id, text=message_part, sentiment=sentiment))
 
     async def send_text_with_buttons(
         self,
@@ -374,6 +380,12 @@ class CollectingOutputChannel(OutputChannel):
 
     async def _persist_message(self, message: Dict[Text, Any]) -> None:
         self.messages.append(message)
+
+    async def send_text_message_with_sentiment(
+        self, recipient_id: Text, text: Text, sentiment: Text, **kwargs: Any
+    ) -> None:
+        for message_part in text.strip().split("\n\n"):
+            await self._persist_message(self._message(recipient_id, text=message_part, sentiment=sentiment))
 
     async def send_text_message(
         self, recipient_id: Text, text: Text, **kwargs: Any
