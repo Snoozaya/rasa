@@ -107,6 +107,7 @@ class TemplatedNaturalLanguageGenerator(NaturalLanguageGenerator):
             "custom",
             "buttons",
             "attachment",
+            "sentiment",
             "quick_replies",
         ]
         if response_vars:
