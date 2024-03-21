@@ -324,15 +324,8 @@ class ActionBotResponse(Action):
                 )
             return []
         message["utter_action"] = self.utter_action
-        message["sentiments"] = self.__get_sentiment_for_response(message["utter_action"], domain.sentiments)
 
         return [create_bot_utterance(message)]
-
-    def __get_sentiment_for_response(self, utter_action_name:str, sentiment_dict):
-        for sentiment, action_names in sentiment_dict.items():
-            if isinstance(action_names, list) and utter_action_name in action_names:
-                return sentiment
-        return None
 
     def name(self) -> Text:
         """Returns action name."""
