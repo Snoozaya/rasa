@@ -210,7 +210,6 @@ def action_for_name_or_text(
 
 def create_bot_utterance(message: Dict[Text, Any]) -> BotUttered:
     """Create BotUttered event from message."""
-    logging.info(f"From actions.py 213: {message['sentiment']}")
     bot_message = BotUttered(
         text=message.pop("text", None),
         data={
@@ -224,10 +223,11 @@ def create_bot_utterance(message: Dict[Text, Any]) -> BotUttered:
             "attachment": message.pop("attachment", None) or message.get("image", None),
             "image": message.pop("image", None),
             "custom": message.pop("custom", None),
-            "sentiment": message.pop("sentiment", ""),
+            "sentiment": message.pop("sentiment", None),
         },
         metadata=message,
     )
+    logging.info(f"From actions.py 230: {bot_message}")
     return bot_message
 
 
