@@ -151,7 +151,7 @@ class MessageProcessor:
         """Handle a single message with this processor."""
         # preprocess message if necessary
         tracker = await self.log_message(message, should_save_tracker=False)
-
+        logging.info(f"In processor.py 154: {message}")
         if self.model_metadata.training_type == TrainingType.NLU:
             await self.save_tracker(tracker)
             rasa.shared.utils.io.raise_warning(
@@ -169,6 +169,7 @@ class MessageProcessor:
         await self.save_tracker(tracker)
 
         if isinstance(message.output_channel, CollectingOutputChannel):
+            logging.info(f"In processor.py 172: {message.output_channel.messages}")
             return message.output_channel.messages
 
         return None
@@ -240,7 +241,7 @@ class MessageProcessor:
         """
         tracker = await self.fetch_tracker_and_update_session(sender_id)
         result = self.predict_next_with_tracker(tracker)
-
+        logging.info(f"In processor.py 244: {result}")
         # save tracker state to continue conversation from this state
         await self.save_tracker(tracker)
 
@@ -268,7 +269,7 @@ class MessageProcessor:
             return None
 
         prediction = self._predict_next_with_tracker(tracker)
-
+        logging.info(f"In processor.py 272: {prediction}")
         scores = [
             {"action": a, "score": p}
             for a, p in zip(self.domain.action_names_or_texts, prediction.probabilities)
@@ -460,7 +461,7 @@ class MessageProcessor:
         tracker = await self.fetch_tracker_and_update_session(
             message.sender_id, message.output_channel, message.metadata
         )
-
+        logging.info(f"In processor.py 464: {message.metadata}")
         await self._handle_message_with_tracker(message, tracker)
 
         if should_save_tracker:
@@ -733,7 +734,7 @@ class MessageProcessor:
         )
 
         self._check_for_unseen_features(parse_data)
-
+        logging.info(f"In processor.py 737: {parse_data}")
         return parse_data
 
     def _parse_message_with_graph(
@@ -900,6 +901,7 @@ class MessageProcessor:
         output_channel: OutputChannel,
     ) -> None:
         """Send all the bot messages that are logged in the events array."""
+        logging.info(f"In processor.py 904: {events}")
         for e in events:
             if not isinstance(e, BotUttered):
                 continue
@@ -995,7 +997,7 @@ class MessageProcessor:
             UTTER_PREFIX
         ):
             self._log_slots(tracker)
-
+        logging.info(f"In processor.py 1000: {events}")
         await self.execute_side_effects(events, tracker, output_channel)
 
         return self.should_predict_another_action(action.name())
@@ -1103,4 +1105,5 @@ class MessageProcessor:
             inputs={PLACEHOLDER_TRACKER: tracker}, targets=[target]
         )
         policy_prediction = results[target]
+        logging.info(f"In processor.py 1108: {policy_prediction}")
         return policy_prediction
