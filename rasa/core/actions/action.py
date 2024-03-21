@@ -223,7 +223,7 @@ def create_bot_utterance(message: Dict[Text, Any]) -> BotUttered:
             "attachment": message.pop("attachment", None) or message.get("image", None),
             "image": message.pop("image", None),
             "custom": message.pop("custom", None),
-            "sentiment": message.pop("sentiment", None),
+            "sentiment": message.pop("sentiment", ""),
         },
         metadata=message,
     )
