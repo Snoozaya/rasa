@@ -931,7 +931,6 @@ class BotUttered(SkipEventInMDStoryMixin):
             # the message contains the image only once
             m["attachment"] = None
 
-        logging.info(f"From events.py 934: {m}")
         return m
 
     @staticmethod

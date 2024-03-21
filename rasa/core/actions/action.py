@@ -227,7 +227,7 @@ def create_bot_utterance(message: Dict[Text, Any]) -> BotUttered:
         },
         metadata=message,
     )
-    logging.info(f"From actions.py 230: {bot_message}")
+
     return bot_message
 
 
@@ -325,7 +325,7 @@ class ActionBotResponse(Action):
                 )
             return []
         message["utter_action"] = self.utter_action
-        logging.info(f"From actions.py 328: {message}")
+
         return [create_bot_utterance(message)]
 
     def name(self) -> Text:
