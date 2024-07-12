@@ -809,14 +809,19 @@ class MessageProcessor:
         if True or self.is_input_stream:
             intent_confidence_threshold = 0.7
             intent_confidence_min_distance = 0.1
+            excluded_intents = ["nlu_fallback", "out_of_scope"]
 
-            if parse_data[INTENT][PREDICTED_CONFIDENCE_KEY] >= intent_confidence_threshold:
-                return true
+            if parse_data[INTENT][PREDICTED_CONFIDENCE_KEY] >= intent_confidence_threshold and parse_data[INTENT][INTENT_NAME_KEY] not in excluded_intents:
+                other_confidences = [i[PREDICTED_CONFIDENCE_KEY] for i in parse_data["intent_ranking"] if i[INTENT_NAME_KEY] not in [parse_data[INTENT][INTENT_NAME_KEY], *excluded_intents]]
+                if len(other_confidences)==0 or parse_data[INTENT][PREDICTED_CONFIDENCE_KEY] - intent_confidence_min_distance > max(other_confidences):
+                    True
+
+                return False
             else:
-                return false
+                return False
 
         else:
-            return true
+            return True
 
     @staticmethod
     def _should_handle_message(tracker: DialogueStateTracker) -> bool:
