@@ -146,7 +146,7 @@ class MessageProcessor:
                 raise ModelNotFound(f"Model {model_path} can not be loaded.")
 
     async def handle_message(
-        self, message: UserMessage
+        self, message: UserMessage, acceptance_config:dict=None
     ) -> Optional[List[Dict[Text, Any]]]:
         """Handle a single message with this processor."""
         # preprocess message if necessary
@@ -777,27 +777,46 @@ class MessageProcessor:
         else:
             parse_data = await self.parse_message(message, tracker)
 
-        # don't ever directly mutate the tracker
-        # - instead pass its events to log
-        tracker.update(
-            UserUttered(
-                message.text,
-                parse_data["intent"],
-                parse_data["entities"],
-                parse_data,
-                input_channel=message.input_channel,
-                message_id=message.message_id,
-                metadata=message.metadata,
-            ),
-            self.domain,
-        )
+        if self._full_utterance_detected(parse_data):
+            logging.info(f"Full Utterance was detected!")
 
-        if parse_data["entities"]:
-            self._log_slots(tracker)
+            # don't ever directly mutate the tracker
+            # - instead pass its events to log
+            tracker.update(
+                UserUttered(
+                    message.text,
+                    parse_data["intent"],
+                    parse_data["entities"],
+                    parse_data,
+                    input_channel=message.input_channel,
+                    message_id=message.message_id,
+                    metadata=message.metadata,
+                ),
+                self.domain,
+            )
 
-        logger.debug(
-            f"Logged UserUtterance - tracker now has {len(tracker.events)} events."
-        )
+            if parse_data["entities"]:
+                self._log_slots(tracker)
+
+            logger.debug(
+                f"Logged UserUtterance - tracker now has {len(tracker.events)} events."
+            )
+        else:
+            logging.info(f"Not a full utterance!")
+
+    def _full_utterance_detected(self, parse_data:dict):
+        logging.info(f"Full Utterance detection for: {parse_data}.")
+        if True or self.is_input_stream:
+            intent_confidence_threshold = 0.7
+            intent_confidence_min_distance = 0.1
+
+            if parse_data[INTENT][PREDICTED_CONFIDENCE_KEY] >= intent_confidence_threshold:
+                return true
+            else:
+                return false
+
+        else:
+            return true
 
     @staticmethod
     def _should_handle_message(tracker: DialogueStateTracker) -> bool:
